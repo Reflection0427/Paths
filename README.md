@@ -122,8 +122,6 @@ Set `DATASETS.ROOT_DIR` to `MARS_ROOT`.
 
 ## Training
 
-All YAML files in the released package contain machine-specific absolute paths. Replace them or override them from the command line.
-
 ### EvReID with DINOv3
 
 ```bash
@@ -175,8 +173,6 @@ python test.py --config_file configs/EvReID_Degrade/Paths.yml \
 ```
 
 ## Citation
-
-If you find this work suseful, please cite:
 
 ```bibtex
 @inproceedings{huo2026paths,
