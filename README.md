@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://reflection0427.github.io/">Yakun Huo</a>,
+  <a href="https://github.com/Reflection0427">Yakun Huo</a>,
   <a href="https://github.com/AWangYQ">Yingquan Wang</a>,
   <a href="https://github.com/010129">Yangyang Liu</a>,
   <a href="https://github.com/Drchip61">Tianyu Yan</a>,
