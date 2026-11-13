@@ -174,7 +174,7 @@ To also write rank lists, t-SNE and similarity plots, add `--vis-enable --vis-ra
 |---|---|
 | Sampled frames T = 8, input 256×128 | `INPUT.SEQ_LEN`, `MODEL.PST_SEQ_LEN`, `INPUT.SIZE_TRAIN` |
 | Batch: 16 identities × 4 tracklets | `SOLVER.IMS_PER_BATCH: 64`, `DATALOADER.NUM_INSTANCE: 4` |
-| Adam, 10-epoch linear warm-up, cosine decay, 80 epochs | `SOLVER.*`, `solver/scheduler_factory.py` |
+| Adam, 10-epoch linear warm-up, cosine decay, 80 epochs (120 on MARS) | `SOLVER.*`, `solver/scheduler_factory.py` |
 | MAB prototypes and momentum μ | `modeling/modules/mab/memory_bank.py`, `engine/processor.py` |
 | PST: G = 8 prompt tokens, g = 2 groups; TPS / BTS | `MODEL.PST_PROMPT_LEN`, `MODEL.PST_PROMPT_GROUPS`, `modeling/modules/pst/core.py` |
 | GGF with K_intra = K_inter = 3 | `modeling/modules/hmf/global_graph.py` |
@@ -185,9 +185,20 @@ To also write rank lists, t-SNE and similarity plots, add `--vis-enable --vis-ra
 
 The released configs are the settings that produced the paper's results. They differ from the text of the paper in a few places:
 
-- **Learning rate.** All results use `SOLVER.BASE_LR: 0.0005` (5e-4). The value 5e-6 given in the paper is a typo.
-- **Additional loss terms.** Besides L_ce, L_tri, L_pcl and L_align, training also uses a frame-level ID loss (`MODEL.FRAME_LOSS_WEIGHT: 0.2`) and a cross-modal supervised contrastive loss (`MODEL.CM_SUPCON_LOSS_WEIGHT: 0.2`). The ID loss is weighted by `MODEL.ID_LOSS_WEIGHT: 0.25`.
-- **MAB momentum.** The prototype momentum is `MODEL.MAB_MOMENTUM: 0.1`.
+- **Learning rate.** The results use `SOLVER.BASE_LR: 0.0005` (5e-4), except MARS with CLIP, which uses 0.00035. The value 5e-6 given in the paper is a typo.
+- **Additional loss terms.** Besides L_ce, L_tri, L_pcl and L_align, training also uses a frame-level ID loss (`MODEL.FRAME_LOSS_WEIGHT`) and a cross-modal supervised contrastive loss (`MODEL.CM_SUPCON_LOSS_WEIGHT`), and the ID loss is scaled by `MODEL.ID_LOSS_WEIGHT`.
+- **MAB momentum.** The prototype momentum is `MODEL.MAB_MOMENTUM: 0.1` (the paper says μ = 0.2).
+- **Schedule.** The cosine schedule runs for `SOLVER.MAX_EPOCHS`: 80 epochs on EvReID and iLIDS-VID, 120 on MARS. The best epoch by mAP is reported.
+- **iLIDS-VID.** These configs turn MAB off (`MODEL.USE_MAB: False`) and use a batch of 32 tracklets (8 identities × 4).
+
+Loss weights and learning rate for each config:
+
+| Config | LR | ID | Frame | L_pcl (λ1) | L_align (λ2) | CM-SupCon | Tracklets per ID |
+|---|---|---|---|---|---|---|---|
+| EvReID (CLIP, DINOv3), MARS DINOv3, iLIDS-VID | 5e-4 | 0.25 | 0.2 | 0.3 | 0.1 | 0.2 | 4 |
+| MARS CLIP | 3.5e-4 | 0.5 | 0.1 | 0.2 | 0.05 | 0.1 | 8 |
+
+On iLIDS-VID, L_pcl has no effect because MAB is off.
 
 ## Acknowledgements
 
