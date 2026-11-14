@@ -3,6 +3,7 @@
 <p align="center">
   <a href="https://doi.org/10.1145/3767308.3835505"><img src="https://img.shields.io/badge/Paper-ACM%20MM%202026-blue" alt="Paper"></a>
   <a href="https://github.com/Reflection0427/Paths"><img src="https://img.shields.io/badge/Code-GitHub-black" alt="Code"></a>
+  <a href="https://huggingface.co/Reflection0427/Paths"><img src="https://img.shields.io/badge/Weights-Hugging%20Face-yellow" alt="Weights"></a>
 </p>
 
 <p align="center">
@@ -160,7 +161,24 @@ One script runs all experiments for each table: `scripts/train_evreid.sh`, `scri
 
 All experiments ran on a single 80 GB A100/A800 GPU.
 
+## Trained Models
+
+Trained checkpoints are on [Hugging Face](https://huggingface.co/Reflection0427/Paths). The numbers below were measured with `test.py` on these exact files.
+
+| Checkpoint | Dataset | Backbone | mAP | R-1 | R-5 | R-10 |
+|---|---|---|---|---|---|---|
+| [`paths_evreid_clip.pth`](https://huggingface.co/Reflection0427/Paths/resolve/main/paths_evreid_clip.pth) | EvReID | CLIP-B/16 | 71.2 | 88.9 | 94.9 | 96.8 |
+| [`paths_evreid_dinov3.pth`](https://huggingface.co/Reflection0427/Paths/resolve/main/paths_evreid_dinov3.pth) | EvReID | DINOv3 | 73.9 | 89.6 | 96.2 | 97.2 |
+| [`paths_mars_dinov3.pth`](https://huggingface.co/Reflection0427/Paths/resolve/main/paths_mars_dinov3.pth) | MARS | DINOv3 | 88.8 | 91.0 | 97.6 | 98.4 |
+
+```bash
+hf download Reflection0427/Paths paths_evreid_dinov3.pth --local-dir weights
+python test.py --config_file configs/EvReID/paths_dinov3.yml TEST.WEIGHT weights/paths_evreid_dinov3.pth
+```
+
 ## Evaluation
+
+To evaluate a model you trained yourself:
 
 ```bash
 python test.py --config_file configs/EvReID/paths_dinov3.yml TEST.WEIGHT logs/EvReID_DINOv3/Paths_best.pth
