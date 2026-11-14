@@ -222,6 +222,10 @@ On iLIDS-VID, L_pcl has no effect because MAB is off.
 
 This code builds on [TransReID](https://github.com/damo-cv/TransReID), [CLIP-ReID](https://github.com/Syliz517/CLIP-ReID), [CLIP](https://github.com/openai/CLIP), [DINOv3](https://github.com/facebookresearch/dinov3) and [timm](https://github.com/huggingface/pytorch-image-models). The bundled CLIP and DINOv3 code keep their original licenses: [`modeling/clip/LICENSE`](modeling/clip/LICENSE) and [`modeling/dinov3/LICENSE.md`](modeling/dinov3/LICENSE.md).
 
+## License
+
+This project is released under the [MIT License](LICENSE). The bundled CLIP code (`modeling/clip/`) keeps its MIT License, and the DINOv3 code (`modeling/dinov3/`) and the DINOv3-based checkpoints are subject to the DINOv3 License.
+
 ## Citation
 
 ```bibtex
